@@ -1,2 +1,5 @@
+build debug.bat
+build windows.bat
+release windows.bat
 export/
 .vscode/
