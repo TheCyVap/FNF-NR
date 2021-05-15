@@ -1,0 +1,14 @@
+random song:random:1
+base game:funkin:1
+vs chara:vschara:1
+vs tricky:tricky:1
+vs abigail:vsabigail:1
+vs neon:vsneon:1
+beach brother:beachbrother:1
+fns:shootin:1
+vs matt:vsmatt:1
+vs carol:vscarol:1
+vs anders:vsanders:1
+vs whitty:vswhitty:1
+starcatcher:catcher:1
+saltys sunday:saltysunday:1

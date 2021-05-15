@@ -1,0 +1,19 @@
+Best Girl:gf:1
+Daddy's Girl:dad:1
+Salty Love:gf:1
+Daughter Complex:dad:1
+Sweet n' Spooky:spooky:2
+Sour n' Scary:spooky:2
+Opheebop:monster:2
+Protect:pico:3
+Defend:pico:3
+Safeguard:pico:3
+Indie Star:mom:4
+Rising Star:mom:4
+Superstar:mom:4
+Order Up:parents-christmas:5
+Rush Hour:parents-christmas:5
+Freedom:monster-christmas:5
+Buckets:senpai:6
+Logarithms:senpai:6
+Terminal:spirit:6

@@ -1,0 +1,3 @@
+base game:funkin:1
+starcatcher:catcher:1
+saltys sunday:saltysunday:1

@@ -1,0 +1,3 @@
+smooth:shootin:3
+gossip:shootin:3
+teen suicide:shootin:3
