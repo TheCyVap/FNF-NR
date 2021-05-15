@@ -74,7 +74,6 @@ This game was made with love to Newgrounds and its community. Extra love to Tom 
 "Wii Funkin'" Mod Team
 
     Sulayre
-    ModdingFunkers Flag
         Sprites, Code, Submitter (Vs. Matt)
     hayley_c0ntrol
         Background Art (Vs. Matt)
@@ -89,7 +88,6 @@ This game was made with love to Newgrounds and its community. Extra love to Tom 
     WhippyorcYT
         Charter (Vs. Matt)
     DEAD SKULLXX
-    ModdingFunkers Flag
         Playtesting (Vs. Matt)
     MrNeptoon
         Being Cool. Twice. (Vs. Matt)
