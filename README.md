@@ -20,6 +20,7 @@ This game was made with love to Newgrounds and its community. Extra love to Tom 
 - 
 ### Randomizer Special Credits
 StarDusk
+
 	Providing art for many things, including upcoming features.
 ### Mod Credits
 "Vs. Chara" Mod Team
