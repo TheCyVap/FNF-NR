@@ -3151,7 +3151,7 @@ class PlayState extends MusicBeatState
 			switch(daRating)
 			{
 				case 'shit':
-					score = -300;
+					score = -10;
 					combo = 0;
 					misses++;
 					health -= 0.0475;
