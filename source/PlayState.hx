@@ -1851,7 +1851,7 @@ class PlayState extends MusicBeatState
 				//
 				if (Main.JackMode == 0)
 				{
-					if (Main.RandomizeOn = true)
+					if (Main.RandomizeOn == true)
 					{
 						daNoteData = FlxG.random.int(0, 3);
 					}
