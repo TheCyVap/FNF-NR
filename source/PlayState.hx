@@ -129,6 +129,7 @@ class PlayState extends MusicBeatState
 
 	private var gfSpeed:Int = 1;
 	private var health:Float = 1;
+	private var MaxHP:Float = 2;
 	private var combo:Int = 0;
 	public static var misses:Int = 0;
 	private var accuracy:Float = 0.00;
@@ -141,6 +142,7 @@ class PlayState extends MusicBeatState
 
 	private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
+	private var healthBar2:FlxBar;
 	private var songPositionBar:Float = 0;
 	
 	private var generatedMusic:Bool = false;
@@ -222,7 +224,7 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
-	
+	Main.BP = 0;
 	Main.LeftBot = false;
 	Main.DownBot = false;
 	Main.UpBot = false;
@@ -232,7 +234,6 @@ class PlayState extends MusicBeatState
 	Main.DownBotH = false;
 	Main.UpBotH = false;
 	Main.RightBotH = false;
-	
 	
 		instance = this;
 		
@@ -470,9 +471,21 @@ class PlayState extends MusicBeatState
 		}
 		switch(SONG.song.toLowerCase())
 		{
+			case 'highrise':
+				SONG.stage = 'stage';
+				SONG.gfVersion = 'gf';
+				SONG.noteStyle = 'normal';
+			case 'ordinance':
+				SONG.stage = 'stage';
+				SONG.gfVersion = 'gf';
+				SONG.noteStyle = 'normal';
+			case 'transgression':
+				SONG.stage = 'stage';
+				SONG.gfVersion = 'gf';
+				SONG.noteStyle = 'normal';
 			case 'freedom':
 				SONG.stage = 'mallEvil';
-			case 'terminal':
+			case 'terminal' | 'b3-thorns':
 				SONG.stage = 'schoolEvil';
 		}
 
@@ -731,7 +744,7 @@ class PlayState extends MusicBeatState
 					bgGirls = new BackgroundGirls(-100, 190);
 					bgGirls.scrollFactor.set(0.9, 0.9);
 
-					if ((SONG.song.toLowerCase() == 'roses') || (SONG.song.toLowerCase() == 'logarithms'))
+					if ((SONG.song.toLowerCase() == 'roses') || (SONG.song.toLowerCase() == 'logarithms') || (SONG.song.toLowerCase() == 'b3-roses'))
 						{
 							if(FlxG.save.data.distractions){
 								bgGirls.getScared();
@@ -870,19 +883,25 @@ class PlayState extends MusicBeatState
 			default:
 				gfVersion = 'gf';
 		}
+		
+		if (SONG.stage == 'limo' && SONG.player1 == 'bf')
+		{
+			gfVersion = 'gf-car';
+			SONG.player1 = 'bf-car';
+		}
 
 		gf = new Character(400, 130, gfVersion);
 		gf.scrollFactor.set(0.95, 0.95);
 
 		var validP2 = 0;
-		if (SONG.player2 == 'gf' || SONG.player2 == 'gf-christmas' || SONG.player2 == 'gf-car' || SONG.player2 == 'gf-pixel' || SONG.player2 == 'dad' || SONG.player2 == 'spooky' || SONG.player2 == 'mom' || SONG.player2 == 'mom-car' || SONG.player2 == 'monster' || SONG.player2 == 'monster-christmas' || SONG.player2 == 'pico' || SONG.player2 == 'bf' || SONG.player2 == 'bf-christmas' || SONG.player2 == 'bf-car' || SONG.player2 == 'bf-pixel' || SONG.player2 == 'bf-pixel-dead' || SONG.player2 == 'senpai' || SONG.player2 == 'senpai-angry' || SONG.player2 == 'spirit' || SONG.player2 == 'parents-christmas' || SONG.player2 == 'bf-holo')
+		if (SONG.player2 == 'gf' || SONG.player2 == 'gf-christmas' || SONG.player2 == 'gf-car' || SONG.player2 == 'gf-pixel' || SONG.player2 == 'dad' || SONG.player2 == 'spooky' || SONG.player2 == 'mom' || SONG.player2 == 'mom-car' || SONG.player2 == 'monster' || SONG.player2 == 'monster-christmas' || SONG.player2 == 'pico' || SONG.player2 == 'bf' || SONG.player2 == 'bf-christmas' || SONG.player2 == 'bf-car' || SONG.player2 == 'bf-pixel' || SONG.player2 == 'bf-pixel-dead' || SONG.player2 == 'senpai' || SONG.player2 == 'senpai-angry' || SONG.player2 == 'spirit' || SONG.player2 == 'parents-christmas' || SONG.player2 == 'bf-holo' || SONG.player2 == 'dad-pixel' || SONG.player2 == 'spooky-pixel' || SONG.player2 == 'pico-pixel')
 		{
 			validP2 = 1;
 		}
 		
 		if (validP2 == 0)
 		{
-			SONG.player1 = 'bf-holo';
+			SONG.player2 = 'bf-holo';
 		}
 
 		if (Main.ROpponents == 1)
@@ -894,10 +913,16 @@ class PlayState extends MusicBeatState
 			{
 				case 1:
 					SONG.player2 = "dad";
+					if (SONG.player1 == "bf-pixel")
+						SONG.player2 = "dad-pixel";
 				case 2:
 					SONG.player2 = "spooky";
+					if (SONG.player1 == "bf-pixel")
+						SONG.player2 = "spooky-pixel";
 				case 3:
 					SONG.player2 = "pico";
+					if (SONG.player1 == "bf-pixel")
+						SONG.player2 = "pico-pixel";
 				case 4:
 					SONG.player2 = "mom";
 					if (SONG.stage == 'limo')
@@ -936,7 +961,9 @@ class PlayState extends MusicBeatState
 					camPos.x += 600;
 					tweenCamIn();
 				}
-
+			case 'bf':
+				dad.x += 60;
+				dad.y += 350;
 			case "spooky":
 				dad.y += 200;
 			case "monster":
@@ -962,10 +989,22 @@ class PlayState extends MusicBeatState
 				dad.x -= 150;
 				dad.y += 100;
 				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y);
+			case 'dad-pixel':
+				dad.x += 150;
+				dad.y += 360;
+				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y);
+			case "spooky-pixel":
+				dad.x += 180;
+				dad.y += 400;
+				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y);
+			case "pico-pixel":
+				dad.x += 180;
+				dad.y += 580;
+				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y-180);
 		}
 
 		var validP1 = 0;
-		if (SONG.player1 == 'gf' || SONG.player1 == 'gf-christmas' || SONG.player1 == 'gf-car' || SONG.player1 == 'gf-pixel' || SONG.player1 == 'dad' || SONG.player1 == 'spooky' || SONG.player1 == 'mom' || SONG.player1 == 'mom-car' || SONG.player1 == 'monster' || SONG.player1 == 'monster-christmas' || SONG.player1 == 'pico' || SONG.player1 == 'bf' || SONG.player1 == 'bf-christmas' || SONG.player1 == 'bf-car' || SONG.player1 == 'bf-pixel' || SONG.player1 == 'bf-pixel-dead' || SONG.player1 == 'senpai' || SONG.player1 == 'senpai-angry' || SONG.player1 == 'spirit' || SONG.player1 == 'parents-christmas' || SONG.player1 == 'bf-holo')
+		if (SONG.player1 == 'gf' || SONG.player1 == 'gf-christmas' || SONG.player1 == 'gf-car' || SONG.player1 == 'gf-pixel' || SONG.player1 == 'dad' || SONG.player1 == 'spooky' || SONG.player1 == 'mom' || SONG.player1 == 'mom-car' || SONG.player1 == 'monster' || SONG.player1 == 'monster-christmas' || SONG.player1 == 'pico' || SONG.player1 == 'bf' || SONG.player1 == 'bf-christmas' || SONG.player1 == 'bf-car' || SONG.player1 == 'bf-pixel' || SONG.player1 == 'bf-pixel-dead' || SONG.player1 == 'senpai' || SONG.player1 == 'senpai-angry' || SONG.player1 == 'spirit' || SONG.player1 == 'parents-christmas' || SONG.player1 == 'bf-holo' || SONG.player1 == 'dad-pixel' || SONG.player1 == 'spooky-pixel' || SONG.player1 == 'pico-pixel')
 		{
 			validP1 = 1;
 		}
@@ -1048,7 +1087,7 @@ class PlayState extends MusicBeatState
 
 		// startCountdown();
 
-		if (SONG.speed > 2.7)
+		if (SONG.speed > 2.7 && SONG.song.toLowerCase() != 'bopoobo')
 		{
 			SONG.speed = 2.7;
 		}
@@ -1060,12 +1099,22 @@ class PlayState extends MusicBeatState
 			storyWeek = 6;
 		}
 		
-		if (curSong.toLowerCase() == 'smooth' || curSong.toLowerCase() == 'gossip' || curSong.toLowerCase() == 'teen suicide')
+		switch (curSong.toLowerCase())
 		{
-			boyfriend.y -= 15;
-			boyfriend.x -= 170;
-			dad.x += 40;
-			gf.x -= 140;
+			case 'smooth' | 'gossip' | 'teen suicide':
+				boyfriend.y -= 15;
+				boyfriend.x -= 170;
+				dad.x += 40;
+				gf.x -= 140;
+			case 'fns-tutorial':
+				boyfriend.y -= 15;
+				boyfriend.x -= 170;
+				dad.x += 40;
+				gf.x = 99999;
+				trace("GET RID OF DAT GORL!!! YEE!!!");
+			case 'adobe thrash' | "piconjo's school" | 'trapped in teh 6aym':
+				boyfriend.y -= 15;
+				boyfriend.x -= 170;
 		}
 		
 		if (SONG.player2 == 'bf-holo')
@@ -1119,6 +1168,12 @@ class PlayState extends MusicBeatState
 				songName.cameras = [camHUD];
 			}
 
+		if (SONG.song.toLowerCase() == 'genocide')
+		{
+			health = 2;
+			MaxHP = 3;
+		}
+
 		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
 		if (FlxG.save.data.downscroll)
 			healthBarBG.y = 50;
@@ -1130,118 +1185,76 @@ class PlayState extends MusicBeatState
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
 		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
+		
+		if (SONG.song.toLowerCase() == 'genocide')
+		{
+		var HealthW:Float = healthBar.width;
+		HealthW = HealthW * (MaxHP/2);
+		healthBar2 = new FlxBar((healthBar.x+healthBar.width)-Std.int(HealthW), healthBar.y, RIGHT_TO_LEFT, Std.int(HealthW), Std.int(healthBar.height), this,
+			'health', 0, MaxHP);
+		healthBar2.scrollFactor.set();
+		healthBar2.createFilledBar(0x00FF0000, 0xFF14DEB9);
+		//healthBar2.x = ((healthBarBG.x + 4) + Std.int(healthBarBG.width - 8))-Std.int(HealthW);
+		// healthBar
+		add(healthBar2);
+		}
 		// healthBar
 		add(healthBar);
+		
 		
 		//Mod Credits
 		switch (SONG.song.toLowerCase())
 		{
 			case 'megalo strike back':
 				creditTxt.text = "Vs. Chara Mod by: hexar, Rishimazza, Eggplant, Fire_Mario_Fan";
-			case 'improbable outset':
+				//
+			case 'improbable outset' | 'madness':
 				creditTxt.text = "Vs. Tricky Mod by: Banbuds, Rozebud, KadeDev, Cval";
-			case 'madness':
-				creditTxt.text = "Vs. Tricky Mod by: Banbuds, Rozebud, KadeDev, Cval";
-			case 'highrise':
+				//
+			case 'highrise' | 'ordinance' | 'transgression':
 				creditTxt.text = "Vs. NEON Mod by: CryoGX";
-			case 'ordinance':
-				creditTxt.text = "Vs. NEON Mod by: CryoGX";
-			case 'transgression':
-				creditTxt.text = "Vs. NEON Mod by: CryoGX";
-			case 'abigail':
+				//
+			case 'abigail' | 'engage foe' | 'eat your heart out':
 				creditTxt.text = "Vs. Abigail Mod by: PixelatedEngie";
-			case 'engage foe':
-				creditTxt.text = "Vs. Abigail Mod by: PixelatedEngie";
-			case 'eat your heart out':
-				creditTxt.text = "Vs. Abigail Mod by: PixelatedEngie";
-			case 'smooth':
-				creditTxt.text = "Friday Night Shootin' Mod by: NEONVORE, Burning Sexuality";
-			case 'gossip':
-				creditTxt.text = "Friday Night Shootin' Mod by: NEONVORE, Burning Sexuality";
-			case 'teen suicide':
-				creditTxt.text = "Friday Night Shootin' Mod by: NEONVORE, Burning Sexuality";
-			case 'surfs up':
+				//
+			case 'fns-tutorial' | 'smooth' | 'gossip' | 'teen suicide' | 'adobe thrash' | "piconjo's school" | 'trapped in teh 6aym':
+				creditTxt.text = "Friday Night Shootin' Mod by: NEONVORE, Burning Sexuality, lostinstruments";
+				//
+			case 'surfs up' | 'tides' | 'beach brawl':
 				creditTxt.text = "Beach Brother Mod by: Squizzle Dizzle, Piesariusz27, GWebDev, GAMER_WORD, absolutelyradical";
-			case 'tides':
-				creditTxt.text = "Beach Brother Mod by: Squizzle Dizzle, Piesariusz27, GWebDev, GAMER_WORD, absolutelyradical";
-			case 'beach brawl':
-				creditTxt.text = "Beach Brother Mod by: Squizzle Dizzle, Piesariusz27, GWebDev, GAMER_WORD, absolutelyradical";
-			case 'light it up':
+				//
+			case 'light it up' | 'ruckus' | 'target practice' | 'sporting' | 'boxing match':
 				creditTxt.text = "Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || ";
 				creditTxt2.text = "Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || ";
 				creditTxtScroll = 1;
-			case 'ruckus':
-				creditTxt.text = "Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || ";
-				creditTxt2.text = "Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || ";
-				creditTxtScroll = 1;
-			case 'target practice':
-				creditTxt.text = "Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || ";
-				creditTxt2.text = "Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || ";
-				creditTxtScroll = 1;
-			case 'sporting':
-				creditTxt.text = "Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || ";
-				creditTxt2.text = "Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || ";
-				creditTxtScroll = 1;
-			case 'boxing match':
-				creditTxt.text = "Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || ";
-				creditTxt2.text = "Vs. Matt Mod by: Sulayre, hayley_c0ntrol, TheOnlyVolume, Biddle3, Tata Charles, joe nuts, WhippyorcYT, DEAD SKULLXX, HexerRush, LetterY, MrNeptoon || ";
-				creditTxtScroll = 1;	
-			case 'carol roll':
+				//
+			case 'carol roll' | 'body' | 'boogie':
 				creditTxt.text = "Vs. Carol Mod by: bbpanzu, GenoX";
-			case 'body':
-				creditTxt.text = "Vs. Carol Mod by: bbpanzu, GenoX";
-			case 'boogie':
-				creditTxt.text = "Vs. Carol Mod by: bbpanzu, GenoX";
-			case 'pentafluoride':
+				//
+			case 'pentafluoride' | 'diminished' | 'psychoneurotic':
 				creditTxt.text = "Vs. Anders Mod by: typic";
-			case 'diminished':
-				creditTxt.text = "Vs. Anders Mod by: typic";
-			case 'psychoneurotic':
-				creditTxt.text = "Vs. Anders Mod by: typic";
-			case 'lo-fight':
+				//
+			case 'lo-fight' | 'overhead' | 'ballistic' | 'ballistic-old':
 				creditTxt.text = "Vs. Whitty Mod by: Sock.clip, Nate Anim8, KadeDev";
-			case 'overhead':
-				creditTxt.text = "Vs. Whitty Mod by: Sock.clip, Nate Anim8, KadeDev";
-			case 'ballistic':
-				creditTxt.text = "Vs. Whitty Mod by: Sock.clip, Nate Anim8, KadeDev";
-			case 'best girl':
+				//
+			case 'best girl' | "daddy's girl" | 'salty love' | 'daughter complex' | "sweet n' spooky" | "sour n' scary" | "opheebop" | 'protect' | 'defend' | "safeguard" | 'indie star' | "rising star" | "superstar" | 'order up' | 'rush hour' | 'freedom' | 'buckets' |  'logarithms' | 'terminal':
 				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case "daddy's girl":
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case 'salty love':
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case 'daughter complex':
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case "sweet n' spooky":
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case "sour n' scary":
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case "opheebop":
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case 'protect':
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case 'defend':
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case "safeguard":
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case 'indie star':
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case "rising star":
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case "superstar":
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case 'order up':
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case 'rush hour':
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case 'freedom':
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case 'buckets':
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case 'logarithms':
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
-			case 'terminal':
-				creditTxt.text = "Salty's Sunday Night Mod by: Tsuraran, Maqua, Radhew";
+				//
+			case 'my battle' | 'last chance' | 'genocide':
+				creditTxt.text = "Vs. Tabi by: Homskiy, GWebDev, BrightFyre, Tenzubushi, DaDrawingLad, Angelattes, Cougar MacDowall, Sini, RussianRatigan, sock.clip";
+				//
+			case 'bopanties' | 'highly fresh' | 'gfilfw':
+				creditTxt.text = "Vs. Girlfriend by: AjTheFunky, GenoX";
+				//
+			case 'norway' | 'tordbot':
+				creditTxt.text = "Vs. Tord by: bbpanzu";
+				//
+			case 'eferu chan' | 'fruity reeverb 2' | 'fl slayer':
+				creditTxt.text = "Vs. FL Chan by: bbpanzu, Heroyouu";
+				//
+			case 'bopoobo':
+				creditTxt.text = "Bopoobo vocal edit by: StarDusk";
+				//
 			default:
 				creditTxt.text = "";
 		}
@@ -1249,6 +1262,17 @@ class PlayState extends MusicBeatState
 			if (curSong.startsWith('SC-'))
 			{
 				creditTxt.text = "Starcatcher Mod by: heartlocket, Criminalicy, AlmostComical, StardustTunes";
+			}
+		//
+		//Biddle3 moment goes brrrrr
+			if (curSong.startsWith('B3-'))
+			{
+				creditTxt.text = "B3 Remixed by: Biddle3, BlazeTheWolf55";
+				switch (SONG.song.toLowerCase())
+				{
+					case 'b3-lo-fight' | 'b3-overhead' | 'b3-ballistic':
+						creditTxt.text += ", Degen Dan || Vs. Whitty Mod by: Sock.clip, Nate Anim8, KadeDev";
+				}
 			}
 		//
 		
@@ -1269,22 +1293,21 @@ class PlayState extends MusicBeatState
 		kadeEngineWatermark = new FlxText(4,healthBarBG.y + 50,0,SONG.song + " (" + storyDifficultyText + ") "+Alter+"" + (Main.watermarks ? " - KE " + MainMenuState.kadeEngineVer : ""), 16);
 		kadeEngineWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		kadeEngineWatermark.scrollFactor.set();
-		add(kadeEngineWatermark);
 
 		if (FlxG.save.data.downscroll)
 			kadeEngineWatermark.y = FlxG.height * 0.9 + 45;
 
 		scoreTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y + 50, 0, "", 20);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		if (!FlxG.save.data.accuracyDisplay)
 		{
 			scoreTxt.x = healthBarBG.x + healthBarBG.width / 2;
 			scoreTxt.y = healthBarBG.y + 35;
+			scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		}
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		if (offsetTesting)
 			scoreTxt.x += 300;
-		add(scoreTxt);
 
 		replayTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (FlxG.save.data.downscroll ? 100 : -100), 0, "REPLAY", 20);
 		replayTxt.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
@@ -1294,6 +1317,7 @@ class PlayState extends MusicBeatState
 				add(replayTxt);
 			}
 
+	
 		iconP1 = new HealthIcon(SONG.player1, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 		add(iconP1);
@@ -1301,12 +1325,19 @@ class PlayState extends MusicBeatState
 		iconP2 = new HealthIcon(SONG.player2, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
+		
+		add(kadeEngineWatermark);
+		add(scoreTxt);
 
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 		if (Main.BotDemo == 0)
 		{
 		healthBar.cameras = [camHUD];
+			if (MaxHP != 2)
+			{
+			healthBar2.cameras = [camHUD];
+			}
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
@@ -1316,6 +1347,10 @@ class PlayState extends MusicBeatState
 		else
 		{
 		healthBar.y = 80000;
+			if (MaxHP != 2)
+			{
+			healthBar2.y = 80000;
+			}
 		healthBarBG.y = 80000;
 		iconP1.y = 80000;
 		iconP2.y = 80000;
@@ -1533,6 +1568,19 @@ class PlayState extends MusicBeatState
 				'weeb/pixelUI/set-pixel',
 				'weeb/pixelUI/date-pixel'
 			]);
+			if (dad.curCharacter == 'spooky-pixel')
+			{
+			introAssets.set('school', [
+				'weeb/pixelUI/ready',
+				'weeb/pixelUI/set',
+				'go'
+			]);
+			introAssets.set('schoolEvil', [
+				'weeb/pixelUI/ready',
+				'weeb/pixelUI/set',
+				'go'
+			]);
+			}
 
 			var introAlts:Array<String> = introAssets.get('default');
 			var altSuffix:String = "";
@@ -1590,13 +1638,13 @@ class PlayState extends MusicBeatState
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
 					go.scrollFactor.set();
 
-					if (curStage.startsWith('school'))
+					if (curStage.startsWith('school') && dad.curCharacter != 'spooky-pixel')
 						go.setGraphicSize(Std.int(go.width * daPixelZoom));
 
 					go.updateHitbox();
 
 					go.screenCenter();
-					add(go);
+					add(go);	
 					FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
 						ease: FlxEase.cubeInOut,
 						onComplete: function(twn:FlxTween)
@@ -1604,7 +1652,14 @@ class PlayState extends MusicBeatState
 							go.destroy();
 						}
 					});
+					if (dad.curCharacter == 'spooky-pixel')
+					{
+					FlxG.sound.play(Paths.sound('introGo'), 0.6);
+					}
+					else
+					{
 					FlxG.sound.play(Paths.sound('introGo' + altSuffix), 0.6);
+					}
 				case 4:
 			}
 
@@ -1791,11 +1846,16 @@ class PlayState extends MusicBeatState
 					gottaHitNote = !section.mustHitSection;
 				}
 
-				if (Main.ExtremeMode == 1)
+				if (SONG.song.toLowerCase() != 'bopoobo')
 				{
-				gottaHitNote = true;
+				//
+				if (Main.JackMode == 0)
+				{
+					if (Main.RandomizeOn = true)
+					{
+						daNoteData = FlxG.random.int(0, 3);
+					}
 				}
-				
 				if (Main.JackMode == 1)
 				{
 					var prev = Main.JackPrev;
@@ -1809,6 +1869,13 @@ class PlayState extends MusicBeatState
 						daNoteData = prev;
 						Main.JackPrev = -1;
 					}
+				}
+				
+				if (Main.ExtremeMode == 1)
+				{
+				gottaHitNote = true;
+				}
+				//
 				}
 				
 				var oldNote:Note;
@@ -2428,7 +2495,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		/*
 		if (FlxG.keys.justPressed.SEVEN && Main.BotDemo == 0)
 		{
 			#if windows
@@ -2443,7 +2509,6 @@ class PlayState extends MusicBeatState
 			}
 			#end
 		}
-		*/
 
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
@@ -2456,26 +2521,72 @@ class PlayState extends MusicBeatState
 
 		var iconOffset:Int = 26;
 
+		if (MaxHP == 2)
+		{
 		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
 		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
-
-		if (health > 2)
-			health = 2;
-
-		if (healthBar.percent < 20)
-			iconP1.animation.curAnim.curFrame = 1;
+		}
 		else
-			iconP1.animation.curAnim.curFrame = 0;
+		{
+		iconP1.x = healthBar2.x + (healthBar2.width * (FlxMath.remapToRange(healthBar2.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
+		iconP2.x = healthBar2.x + (healthBar2.width * (FlxMath.remapToRange(healthBar2.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
+		}
 
-		if (healthBar.percent > 80)
-			iconP2.animation.curAnim.curFrame = 1;
+		if (health > MaxHP)
+			health = MaxHP;
+
+		if (MaxHP == 2)
+		{
+			if (healthBar.percent < 20)
+			{
+				iconP1.animation.curAnim.curFrame = 1;
+			}
+			else
+			{
+				iconP1.animation.curAnim.curFrame = 0;
+				if (Main.ExtraIcons == 1 && healthBar.percent > 80)
+					iconP1.animation.curAnim.curFrame = 2;
+			}
+
+			if (healthBar.percent > 80)
+				iconP2.animation.curAnim.curFrame = 1;
+			else
+			{
+				iconP2.animation.curAnim.curFrame = 0;
+				if (Main.ExtraIcons == 1 && healthBar.percent < 20)
+					iconP2.animation.curAnim.curFrame = 2;
+			}
+		}
 		else
-			iconP2.animation.curAnim.curFrame = 0;
+		{
+			if (MaxHP == 3)
+			{
+				if (healthBar.percent < 20)
+				{
+					iconP1.animation.curAnim.curFrame = 1;
+				}
+				else
+				{
+					iconP1.animation.curAnim.curFrame = 0;
+					if (Main.ExtraIcons == 1 && health > 2)
+						iconP1.animation.curAnim.curFrame = 2;
+				}
+
+				if (health > 2)
+					iconP2.animation.curAnim.curFrame = 1;
+				else
+				{
+					iconP2.animation.curAnim.curFrame = 0;
+					if (Main.ExtraIcons == 1 && healthBar.percent < 20)
+						iconP2.animation.curAnim.curFrame = 2;
+				}
+			}
+		}
 
 		/* if (FlxG.keys.justPressed.NINE)
 			FlxG.switchState(new Charting()); */
 
-		#if debug
+		//#if debug
 		if (FlxG.keys.justPressed.EIGHT && Main.BotDemo == 0)
 		{
 			FlxG.switchState(new AnimationDebug(SONG.player2));
@@ -2488,7 +2599,7 @@ class PlayState extends MusicBeatState
 			#end
 		}
 		
-		#end
+		//#end
 
 		if (startingSong)
 		{
@@ -2657,6 +2768,15 @@ class PlayState extends MusicBeatState
 						camFollow.x = dad.getMidpoint().x - 100;
 					case 'senpai-angry':
 						camFollow.y = dad.getMidpoint().y - 430;
+						camFollow.x = dad.getMidpoint().x - 100;
+					case 'dad-pixel':
+						camFollow.y = dad.getMidpoint().y - 380;
+						camFollow.x = dad.getMidpoint().x - 100;
+					case 'spooky-pixel':
+						camFollow.y = dad.getMidpoint().y - 280;
+						camFollow.x = dad.getMidpoint().x - 100;
+					case 'pico-pixel':
+						camFollow.y = dad.getMidpoint().y - 310;
 						camFollow.x = dad.getMidpoint().x - 100;
 				}
 
@@ -2852,6 +2972,19 @@ class PlayState extends MusicBeatState
 					{
 						if (SONG.song != 'Tutorial' && SONG.song != 'SC-Tutorial')
 							camZooming = true;
+							
+						if (SONG.song.toLowerCase() == 'genocide')
+						{
+							switch(storyDifficulty)
+							{
+								case 0:
+									health -= 0.006;
+								case 1:
+									health -= 0.009;
+								case 2:
+									health -= 0.012;
+							}
+						}
 
 						var altAnim:String = "";
 	
@@ -3101,9 +3234,11 @@ class PlayState extends MusicBeatState
 				if (Main.BotDemo == 0)
 				{
 				FlxG.switchState(new FreeplayState());
+				FlxG.sound.music.stop();
 				}
 				else
 				{
+					FlxG.sound.music.stop();
 					Main.BotDemo = 2;
 					curBeat = -2;
 					curStep = -99;
@@ -3162,7 +3297,7 @@ class PlayState extends MusicBeatState
 				case 'bad':
 					daRating = 'bad';
 					score = 0;
-					if (health < 2)
+					if (health < MaxHP)
 					{	
 						if (daNote.noteData >= 0)
 							health += 0.023;
@@ -3178,7 +3313,7 @@ class PlayState extends MusicBeatState
 					score = 200;
 					ss = false;
 					goods++;
-					if (health < 2)
+					if (health < MaxHP)
 					{	
 						if (daNote.noteData >= 0)
 							health += 0.023;
@@ -3188,7 +3323,7 @@ class PlayState extends MusicBeatState
 					if (FlxG.save.data.accuracyMod == 0)
 						totalNotesHit += 0.75;
 				case 'sick':
-					if (health < 2)
+					if (health < MaxHP)
 					{	
 						if (daNote.noteData >= 0)
 							health += 0.023;
@@ -3802,7 +3937,7 @@ class PlayState extends MusicBeatState
 					}
 					else
 					{
-						if (health < 2)
+						if (health < MaxHP)
 							health += 0.02;
 						
 						totalNotesHit += 1;
@@ -3943,7 +4078,8 @@ class PlayState extends MusicBeatState
 		lightningStrikeBeat = curBeat;
 		lightningOffset = FlxG.random.int(8, 24);
 
-		boyfriend.playAnim('scared', true);
+		if (boyfriend.curCharacter == 'bf')
+			boyfriend.playAnim('scared', true);
 		gf.playAnim('scared', true);
 	}
 
@@ -3964,6 +4100,10 @@ class PlayState extends MusicBeatState
 		#end
 
 		if ((dad.curCharacter == 'spooky' && curStep % 4 == 2) && Main.EDance == 0 && Main.ESpecial == 0)
+		{
+			dad.dance();
+		}
+		if ((dad.curCharacter == 'spooky-pixel' && curStep % 4 == 2) && Main.EDance == 0 && Main.ESpecial == 0)
 		{
 			dad.dance();
 		}
@@ -4021,7 +4161,7 @@ class PlayState extends MusicBeatState
 			// Commented out until a reason to bring this back arises in the future.
 			
 			/*
-			if(dad.animation.curAnim.name.startsWith('sing') && Main.EDance == 0 && dad.curCharacter != 'spooky')
+			if(dad.animation.curAnim.name.startsWith('sing') && Main.EDance == 0 && dad.curCharacter != 'spooky' && dad.curCharacter != 'spooky-pixel')
 			{
 				if (SONG.notes[Math.floor(curStep / 16)].mustHitSection)
 				{
@@ -4034,22 +4174,36 @@ class PlayState extends MusicBeatState
 		wiggleShit.update(Conductor.crochet);
 
 		//Special Animations
-		if (dad.curCharacter == 'spooky' && curSong.toLowerCase() == 'spookeez')
+		if (dad.curCharacter == 'spooky')
 		{
-			if (curBeat == 39 || curBeat == 103)
+			switch(curSong.toLowerCase())
 			{
-			dad.playAnim('YEAH');
-			Main.ESpecial = Math.round((openfl.Lib.current.stage.frameRate)/(60/36));
+				case 'spookeez':
+					if (curBeat == 39 || curBeat == 103)
+					{
+					dad.playAnim('YEAH');
+					Main.ESpecial = Math.round((openfl.Lib.current.stage.frameRate)/(60/36));
+					}
+				case 'sc-spookeez':
+					if (curBeat == 39 || curBeat == 103 || curBeat == 231)
+					{
+					dad.playAnim('YEAH');
+					Main.ESpecial = Math.round((openfl.Lib.current.stage.frameRate)/(60/36));
+					}
+				case 'b3-spookeez':
+					if (curBeat == 39 || curBeat == 103)
+					{
+					dad.playAnim('YEAH');
+					Main.ESpecial = Math.round((openfl.Lib.current.stage.frameRate)/(60/36));
+					}
+				case 'fl slayer':
+					if (curBeat == 35 || curBeat == 187)
+					{
+					dad.playAnim('YEAH');
+					Main.ESpecial = Math.round((openfl.Lib.current.stage.frameRate)/(60/36));
+					}
 			}
-		}
-		
-		if (dad.curCharacter == 'spooky' && curSong.toLowerCase() == 'sc-spookeez')
-		{
-			if (curBeat == 39 || curBeat == 103 || curBeat == 231)
-			{
-			dad.playAnim('YEAH');
-			Main.ESpecial = Math.round((openfl.Lib.current.stage.frameRate)/(60/36));
-			}
+			
 		}
 
 		// HARDCODING FOR MILF ZOOMS!
@@ -4069,6 +4223,27 @@ class PlayState extends MusicBeatState
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.03;
 		}
+		
+		if (curSong.toLowerCase() == 'bopoobo')
+		{	
+			if (curBeat == 19)
+			{
+			Main.EDance = 999999;
+			dad.playAnim('stand');
+			}
+			if (curBeat == 41)
+			{
+			Main.EDance = 999999;
+			dad.playAnim('stare');
+			}
+			if (curBeat == 50)
+			{
+			dad.alpha = 0;
+			dad.visible = false;
+			iconP2.alpha = 0;
+			Main.BP = 1;
+			}
+		}
 
 		iconP1.setGraphicSize(Std.int(150 + 30));
 		iconP2.setGraphicSize(Std.int(150 + 30));
@@ -4081,7 +4256,7 @@ class PlayState extends MusicBeatState
 			gf.dance();
 		}
 
-		if ((dad.curCharacter != 'spooky') && Main.EDance == 0)
+		if ((dad.curCharacter != 'spooky' && dad.curCharacter != 'spooky-pixel') && Main.EDance == 0)
 		{
 			dad.dance();
 		}

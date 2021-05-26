@@ -81,6 +81,19 @@ class Highscore
 					setScore(daWeek, score);
 				}
 			}
+			if (Main.StoryMenu == 4)
+			{
+				daWeek = formatSong('B3week' + week, diff);
+				if (songScores.exists(daWeek))
+				{
+					if (songScores.get(daWeek) < score)
+						setScore(daWeek, score);
+				}
+				else
+				{
+					setScore(daWeek, score);
+				}
+			}
 		}
 	}
 
@@ -141,6 +154,13 @@ class Highscore
 			setScore(formatSong('SSweek' + week, diff), 0);
 			
 		oop = 'SCweek';
+		}
+		if (Main.StoryMenu == 4)
+		{
+		if (!songScores.exists(formatSong('B3week' + week, diff)))
+			setScore(formatSong('B3week' + week, diff), 0);
+			
+		oop = 'B3week';
 		}
 		return songScores.get(formatSong(oop + week, diff));
 	}

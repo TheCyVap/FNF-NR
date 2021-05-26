@@ -75,6 +75,8 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
+	Main.BP = 0;
+	Main.ROpponents = 0;
 	Main.ExtremeMode = 0;
 	Main.JackMode = 0;
 	
@@ -150,6 +152,44 @@ class StoryMenuState extends MusicBeatState
 		
 			curDifficulty = 2;
 	}
+	
+	if (Main.StoryMenu == 4)
+	{
+		weekData = [
+			['B3-Tutorial'],
+			['B3-Bopeebo', 'B3-Fresh', 'B3-Dadbattle'],
+			['B3-Spookeez', 'B3-South'],
+			['B3-Pico', 'B3-Philly', "B3-Blammed"],
+			['B3-Satin Panties', "B3-High", "B3-Milf"],
+			['B3-Cocoa', 'B3-Eggnog', 'B3-Winter Horrorland'],
+			['B3-Senpai', 'B3-Roses', 'B3-Thorns'],
+			['B3-Lo-Fight', 'B3-Overhead', 'B3-Ballistic']
+		];
+
+		weekUnlocked = [true, true, true, true, true, true, true, true];
+
+		weekCharacters = [
+			['', 'bf', 'gf'],
+			['dad', 'bf', 'gf'],
+			['spooky', 'bf', 'gf'],
+			['pico', 'bf', 'gf'],
+			['mom', 'bf', 'gf'],
+			['parents-christmas', 'bf', 'gf'],
+			['senpai', 'bf', 'gf'],
+			['', 'bf', 'gf'],
+		];
+
+		weekNames = [
+			"Remix Readying",
+			"Daddy Dearest",
+			"Spooky Month",
+			"PICO",
+			"MOMMY MUST MURDER",
+			"RED SNOW",
+			"Hating Simulator ft. Moawling",
+			"Back Alley Blitz"
+		];
+	}
 
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
@@ -184,6 +224,11 @@ class StoryMenuState extends MusicBeatState
 			{
 			storyText.text = "SALTY'S SUNDAY NIGHT";
 			storyText.setFormat("VCR OSD Mono", 20, FlxColor.GRAY, CENTER);
+			}
+			case 4:
+			{
+			storyText.text = "FNF: B3 REMIXED";
+			storyText.setFormat("VCR OSD Mono", 20, FlxColor.YELLOW, CENTER);
 			}
 		}
 		

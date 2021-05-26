@@ -26,12 +26,17 @@ class Main extends Sprite
 	public static var ExtremeMode:Int = 0; //Extreme Mode lol
 	public static var JackMode:Int = 0; //Jacks galore
 	public static var JackPrev:Int = 0; //Previous Note
-	public static var ROpponents:Int = 0; //Jacks galore
+	public static var ROpponents:Int = 0; //random opponents or some fucking shit fuck dammit
+	public static var ExtraIcons:Int = 1; //Extra Icons
+	
 	
 	public static var FPMenu = 0; //Wee
+	public static var FreeplayActive:Int = 0; //dfsddfhndskjfsnfsdkugsdgnjdsi
 	public static var StoryMenu = 0; //Wee
 	public static var EDance:Int = 0; //For opponent dancing lol
 	public static var ESpecial:Int = 0; //For special anims
+	
+	public static var BP = 0; //Don't ask
 	
 	public static var BotMode:Int = 0;
 	public static var BotDemo:Int = 0;

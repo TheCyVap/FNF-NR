@@ -310,6 +310,18 @@
 	<SubTexture name="Z capital0001" x="768" y="537" width="38" height="47"/>
 	<SubTexture name="Z capital0002" x="816" y="537" width="38" height="47"/>
 	<SubTexture name="Z capital0003" x="816" y="537" width="38" height="47"/>
+	<SubTexture name="2 bold0000" x="347" y="890" width="51" height="64"/>
+	<SubTexture name="2 bold0001" x="347" y="890" width="51" height="64"/>
+	<SubTexture name="2 bold0002" x="407" y="890" width="51" height="64"/>
+	<SubTexture name="2 bold0003" x="407" y="890" width="51" height="64"/>
+	<SubTexture name="3 bold0000" x="823" y="819" width="54" height="67"/>
+	<SubTexture name="3 bold0001" x="823" y="819" width="54" height="67"/>
+	<SubTexture name="3 bold0002" x="887" y="819" width="54" height="67"/>
+	<SubTexture name="3 bold0003" x="887" y="819" width="54" height="67"/>
+	<SubTexture name="6 bold0000" x="483" y="889" width="52" height="65"/>
+	<SubTexture name="6 bold0001" x="483" y="889" width="52" height="65"/>
+	<SubTexture name="6 bold0002" x="543" y="889" width="52" height="65"/>
+	<SubTexture name="6 bold0003" x="543" y="889" width="52" height="65"/>
 	<SubTexture name="[0000" x="864" y="537" width="25" height="61"/>
 	<SubTexture name="[0001" x="864" y="537" width="25" height="61"/>
 	<SubTexture name="[0002" x="899" y="537" width="24" height="61" frameX="0" frameY="0" frameWidth="25" frameHeight="61"/>
@@ -502,4 +514,8 @@
 	<SubTexture name="~0001" x="712" y="838" width="43" height="21"/>
 	<SubTexture name="~0002" x="765" y="838" width="43" height="21"/>
 	<SubTexture name="~0003" x="765" y="838" width="43" height="21"/>
+	<SubTexture name="old0000" x="0" y="893" width="157" height="59"/>
+	<SubTexture name="old0001" x="0" y="893" width="157" height="59"/>
+	<SubTexture name="old0002" x="160" y="893" width="157" height="59"/>
+	<SubTexture name="old0003" x="160" y="893" width="157" height="59"/>
 </TextureAtlas>

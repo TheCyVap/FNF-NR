@@ -12,6 +12,7 @@ import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 import lime.utils.Assets;
 
 class RandomizerOptionsMenu extends MusicBeatState
@@ -33,22 +34,88 @@ class RandomizerOptionsMenu extends MusicBeatState
 	var OMenu4:FlxText;
 	var OMenu5:FlxText;
 	var OMenu6:FlxText;
+	var OMenu7:FlxText;
 	var SeedX = 0;
 	var SettingSeed = 0;
 	var ded = 0;
 	var numpress = -1;
 	var NumInput = Main.RandomizeSeed;
+	var bgArrows:FlxSprite;
+	var bgturn = 0;
+	var bgtimer = 300;
 
 	override function create()
 	{
-		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuDesat"));
+	
+		FlxG.sound.muteKeys = null;
+		FlxG.sound.volumeUpKeys = null;
+		FlxG.sound.volumeDownKeys = null;
+		
+		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image("options1BG"));
 
-		menuBG.color = 0xFFea71fd;
-		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
 		menuBG.updateHitbox();
-		menuBG.screenCenter();
 		menuBG.antialiasing = true;
 		add(menuBG);
+		
+		bgArrows = new FlxSprite(0,0);
+		bgArrows.frames = Paths.getSparrowAtlas('arrowBG');
+		bgArrows.animation.addByPrefix('startA', 'startA',16, false);
+		bgArrows.animation.addByPrefix('rotateA', 'rotateA',16, false);
+		bgArrows.animation.addByPrefix('rotateB', 'rotateB',16, false);
+		bgArrows.animation.addByPrefix('rotateC', 'rotateC',16, false);
+		bgArrows.animation.addByPrefix('rotateD', 'rotateD',16, false);
+		bgArrows.scale.set(4,4);
+		bgArrows.updateHitbox();
+		bgArrows.antialiasing = true;
+		bgArrows.alpha = 0.5;
+		add(bgArrows);
+		bgArrows.animation.play('startA');
+		
+		Main.RCurrentSeed = FlxG.random.resetInitialSeed();
+
+		new FlxTimer().start(0.02, function(tmr:FlxTimer)
+		{
+			bgtimer -= FlxG.random.int(1,4);
+			if (bgtimer <= 0)
+			{
+				bgturn += 1;
+				bgtimer += 300;
+				
+				switch (bgturn)
+				{
+					case 1:
+						bgArrows.animation.play('rotateA');
+					case 2:
+						bgArrows.animation.play('rotateB');
+					case 3:
+						bgArrows.animation.play('rotateC');
+					case 4:
+					{
+						bgArrows.animation.play('rotateD');
+						bgturn = 0;
+					}
+				}
+			}
+		
+			menuBG.x -= 0.5;
+			menuBG.y -= 0.5;
+			
+			if (menuBG.x <= -128)
+			{
+				menuBG.x += 128;
+				menuBG.y += 128;
+			}
+			
+			bgArrows.x -= 0.5;
+			bgArrows.y -= 0.5;
+			
+			if (bgArrows.x <= -256)
+			{
+				bgArrows.x += 256;
+				bgArrows.y += 256;
+			}
+			
+		}, 0);
 
 		currentDescription = "none";
 
@@ -58,19 +125,19 @@ class RandomizerOptionsMenu extends MusicBeatState
 		add(OTitle);
 		OTitle.x -= OTitle.width/2;
 		
-		OMenu1 = new FlxText(FlxG.width/2,  150, 0, "Note Randomization:  ON", 12);
+		OMenu1 = new FlxText(FlxG.width/2,  100, 0, "Note Randomization:  ON", 12);
 		OMenu1.scrollFactor.set();
 		OMenu1.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(OMenu1);
 		OMenu1.x -= OMenu1.width/2;
 		
-		OMenu2 = new FlxText(FlxG.width/2, 200, 0, "     Seed: [          ]", 12);
+		OMenu2 = new FlxText(FlxG.width/2, 150, 0, "     Seed: [          ]", 12);
 		OMenu2.scrollFactor.set();
 		OMenu2.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(OMenu2);
 		OMenu2.x -= OMenu2.width/2;
 		
-		OSeed = new FlxText(FlxG.width/2, 200, 0,  "RANDOMIZED", 12);
+		OSeed = new FlxText(FlxG.width/2, 150, 0,  "RANDOMIZED", 12);
 		OSeed.scrollFactor.set();
 		OSeed.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(OSeed);
@@ -82,29 +149,35 @@ class RandomizerOptionsMenu extends MusicBeatState
 			OSeed.x = SeedX-OSeed.width;
 		}
 		
-		OMenu3 = new FlxText(FlxG.width/2, 250, 0, "      Extreme Mode:  ON", 12);
+		OMenu3 = new FlxText(FlxG.width/2, 200, 0, "      Extreme Mode:  ON", 12);
 		OMenu3.scrollFactor.set();
 		OMenu3.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(OMenu3);
 		OMenu3.x -= OMenu3.width/2;
 
-		OMenu4 = new FlxText(FlxG.width/2, 300, 0, "         Jack Mode:  ON", 12);
+		OMenu4 = new FlxText(FlxG.width/2, 250, 0, "         Jack Mode:  ON", 12);
 		OMenu4.scrollFactor.set();
 		OMenu4.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(OMenu4);
 		OMenu4.x -= OMenu4.width/2;
 		
-		OMenu5 = new FlxText(FlxG.width/2, 350, 0, "   Random Opponent:  ON", 12);
+		OMenu5 = new FlxText(FlxG.width/2, 300, 0, "   Random Opponent:  ON", 12);
 		OMenu5.scrollFactor.set();
 		OMenu5.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(OMenu5);
 		OMenu5.x -= OMenu5.width/2;
 		
-		OMenu6 = new FlxText(FlxG.width/2, 550, 0, "BACK TO MAIN MENU", 12);
+		OMenu6 = new FlxText(FlxG.width/2, 350, 0, "Extra Health Icons:  ON", 12);
 		OMenu6.scrollFactor.set();
 		OMenu6.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(OMenu6);
 		OMenu6.x -= OMenu6.width/2;
+		
+		OMenu7 = new FlxText(FlxG.width/2, 500, 0, "BACK TO MAIN MENU", 12);
+		OMenu7.scrollFactor.set();
+		OMenu7.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(OMenu7);
+		OMenu7.x -= OMenu7.width/2;
 
 		versionShit = new FlxText(5, FlxG.height - 24, 0, "text", 12);
 		versionShit.scrollFactor.set();
@@ -275,6 +348,18 @@ class RandomizerOptionsMenu extends MusicBeatState
 						}
 						case 6:
 						{
+							var oop = Main.ExtraIcons;
+							if (oop == 0)
+							{
+								Main.ExtraIcons = 1;
+							}
+							else
+							{
+								Main.ExtraIcons = 0;
+							}
+						}
+						case 7:
+						{
 							ded = 1;
 							FlxG.switchState(new MainMenuState());
 						}
@@ -296,7 +381,7 @@ class RandomizerOptionsMenu extends MusicBeatState
 		OMenu3.text = "      Extreme Mode: OFF";
 		OMenu4.text = "         Jack Mode: OFF";
 		OMenu5.text = "   Random Opponent: OFF";
-		
+		OMenu6.text = "Extra Health Icons: OFF";
 		
 		if (Main.RandomizeOn == true)
 		{
@@ -322,6 +407,8 @@ class RandomizerOptionsMenu extends MusicBeatState
 			OMenu4.text = "         Jack Mode:  ON";
 		if (Main.ROpponents == 1)
 			OMenu5.text = "   Random Opponent:  ON";
+		if (Main.ExtraIcons == 1)
+			OMenu6.text = "Extra Health Icons:  ON";
 			
 		switch(curSelected)
 		{
@@ -334,6 +421,7 @@ class RandomizerOptionsMenu extends MusicBeatState
 			OMenu4.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			OMenu5.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			OMenu6.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			OMenu7.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			versionShit.text = "Randomizes what arrow every note is on!";
 			}
 			case 2:
@@ -345,6 +433,7 @@ class RandomizerOptionsMenu extends MusicBeatState
 			OMenu4.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			OMenu5.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			OMenu6.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			OMenu7.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			if (SettingSeed == 0)
 				versionShit.text = "Your current Random Seed. Press [ENTER] to set it.";
 			if (SettingSeed == 1)
@@ -359,6 +448,7 @@ class RandomizerOptionsMenu extends MusicBeatState
 			OMenu4.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			OMenu5.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			OMenu6.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			OMenu7.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			versionShit.text = "BF will get every note in the usual chart. (Freeplay Only)";
 			}
 			case 4:
@@ -370,6 +460,7 @@ class RandomizerOptionsMenu extends MusicBeatState
 			OMenu4.setFormat("VCR OSD Mono", 48, FlxColor.YELLOW, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			OMenu5.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			OMenu6.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			OMenu7.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			versionShit.text = "The Randomizer will attempt to create many more jacks than usual when it can.";
 			}
 			case 5:
@@ -381,6 +472,7 @@ class RandomizerOptionsMenu extends MusicBeatState
 			OMenu4.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			OMenu5.setFormat("VCR OSD Mono", 48, FlxColor.YELLOW, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			OMenu6.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			OMenu7.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			versionShit.text = "Opponent is randomized on each song play, which will probably break things. (Freeplay Only)";
 			}
 			case 6:
@@ -392,6 +484,19 @@ class RandomizerOptionsMenu extends MusicBeatState
 			OMenu4.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			OMenu5.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			OMenu6.setFormat("VCR OSD Mono", 48, FlxColor.YELLOW, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			OMenu7.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			versionShit.text = "Adds in winning icons for everyone. (GF/Week 6 excluded.)";
+			}	
+			case 7:
+			{
+			OMenu1.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			OMenu2.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			OSeed.setFormat("VCR OSD Mono", 48,  FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			OMenu3.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			OMenu4.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			OMenu5.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			OMenu6.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			OMenu7.setFormat("VCR OSD Mono", 48, FlxColor.YELLOW, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			versionShit.text = "Exit this menu.";
 			}	
 		}
@@ -441,9 +546,9 @@ class RandomizerOptionsMenu extends MusicBeatState
 
 		if (curSelected < 1)
 		{
-			curSelected = 6;
+			curSelected = 7;
 		}
-		if (curSelected > 6)
+		if (curSelected > 7)
 		{
 			curSelected = 1;
 		}

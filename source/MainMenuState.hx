@@ -56,12 +56,10 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		Main.FPMenu = -1;
 		Main.StoryMenu = 0;
 		Main.BotMode = 0;
 		Main.BotDemo = 0;
-		FlxG.sound.muteKeys = null;
-		FlxG.sound.volumeUpKeys = null;
-		FlxG.sound.volumeDownKeys = null;
 		#if windows
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -73,6 +71,10 @@ class MainMenuState extends MusicBeatState
 		}
 
 		persistentUpdate = persistentDraw = true;
+		
+		FlxG.sound.muteKeys = [52];
+		FlxG.sound.volumeUpKeys = [187];
+		FlxG.sound.volumeDownKeys = [189];
 
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
 		bg.scrollFactor.x = 0;
@@ -270,6 +272,7 @@ class MainMenuState extends MusicBeatState
 											FlxG.switchState(new FreeplayState());
 											trace("Story Menu Selected");
 										case 'freeplay':
+											Main.FPMenu = 0;
 											FlxG.switchState(new FreeplayState());
 
 											trace("Freeplay Menu Selected");
@@ -286,9 +289,6 @@ class MainMenuState extends MusicBeatState
 						remove(RSelect);
 						remove(ExtremeToggle);
 						
-						FlxG.sound.muteKeys = [52];
-						FlxG.sound.volumeUpKeys = [187];
-						FlxG.sound.volumeDownKeys = [189];
 						});
 					}
 				}

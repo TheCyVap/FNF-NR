@@ -8,6 +8,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 import lime.utils.Assets;
 
 
@@ -31,6 +32,9 @@ class FreeplayState extends MusicBeatState
 	var diffText:FlxText;
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
+	var bgArrows:FlxSprite;
+	var bgturn = 0;
+	var bgtimer = 300;
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
@@ -39,6 +43,7 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
+		Main.BP = 0;
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('no'));
 		
 		if (curMenu == 0)
@@ -75,6 +80,19 @@ class FreeplayState extends MusicBeatState
 			initSonglist = CoolUtil.coolTextFile(Paths.txt('songlist-saltysunday'));
 			curDifficulty = 2;
 		}
+		if (curMenu == 14)
+			initSonglist = CoolUtil.coolTextFile(Paths.txt('songlist-vstabi'));
+		if (curMenu == 15)
+		{
+			initSonglist = CoolUtil.coolTextFile(Paths.txt('songlist-vsgf'));
+			curDifficulty = 2;
+		}
+		if (curMenu == 16)
+			initSonglist = CoolUtil.coolTextFile(Paths.txt('songlist-b3'));
+		if (curMenu == 17)
+			initSonglist = CoolUtil.coolTextFile(Paths.txt('songlist-tord'));
+		if (curMenu == 18)
+			initSonglist = CoolUtil.coolTextFile(Paths.txt('songlist-flchan'));
 			
 		if (Main.StoryMenu == -1)
 		{
@@ -90,13 +108,12 @@ class FreeplayState extends MusicBeatState
 			songs.push(new SongMetadata(data[0], Std.parseInt(data[2]), data[1]));
 		}
 
-		/* 
-			if (FlxG.sound.music != null)
-			{
-				if (!FlxG.sound.music.playing)
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
-			}
-		 */
+		if (Main.FreeplayActive == 0 && curMenu != -1)
+		{
+			Main.FreeplayActive = 1;
+			FlxG.sound.music.stop();
+			FlxG.sound.playMusic(Paths.music('title'));
+		}
 
 		 #if windows
 		 // Updating Discord Rich Presence
@@ -113,15 +130,102 @@ class FreeplayState extends MusicBeatState
 
 		// LOAD CHARACTERS
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
-		add(bg);
+		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image("options2BG"));
+
+		menuBG.updateHitbox();
+		menuBG.antialiasing = true;
+		add(menuBG);
+		
+		bgArrows = new FlxSprite(0,0);
+		bgArrows.frames = Paths.getSparrowAtlas('arrowBG');
+		bgArrows.animation.addByPrefix('startA', 'startA',24, false);
+		bgArrows.animation.addByPrefix('rotateA', 'rotateA',24, false);
+		bgArrows.animation.addByPrefix('rotateB', 'rotateB',24, false);
+		bgArrows.animation.addByPrefix('rotateC', 'rotateC',24, false);
+		bgArrows.animation.addByPrefix('rotateD', 'rotateD',24, false);
+		bgArrows.scale.set(4,4);
+		bgArrows.updateHitbox();
+		bgArrows.antialiasing = true;
+		bgArrows.alpha = 0.5;
+		add(bgArrows);
+		bgArrows.animation.play('startA');
+		
+		Main.RCurrentSeed = FlxG.random.resetInitialSeed();
+
+		new FlxTimer().start(0.02, function(tmr:FlxTimer)
+		{
+			bgtimer -= FlxG.random.int(2,6);
+			if (bgtimer <= 0)
+			{
+				bgturn += 1;
+				bgtimer += 300;
+				
+				switch (bgturn)
+				{
+					case 1:
+						bgArrows.animation.play('rotateA');
+					case 2:
+						bgArrows.animation.play('rotateB');
+					case 3:
+						bgArrows.animation.play('rotateC');
+					case 4:
+					{
+						bgArrows.animation.play('rotateD');
+						bgturn = 0;
+					}
+				}
+			}
+		
+			menuBG.x -= 0.8;
+			menuBG.y -= 0.8;
+			
+			if (menuBG.x <= -128)
+			{
+				menuBG.x += 128;
+				menuBG.y += 128;
+			}
+			
+			bgArrows.x -= 0.8;
+			bgArrows.y -= 0.8;
+			
+			if (bgArrows.x <= -256)
+			{
+				bgArrows.x += 256;
+				bgArrows.y += 256;
+			}
+			
+		}, 0);
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 
+		var cursongname = "";
+		var endcheck = -1;
+		var endtype = 0;
+
 		for (i in 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
+			cursongname = "";
+			endtype = 0;
+			endcheck = songs[i].songName.indexOf("-old");
+			if (endcheck > -1)
+				endtype = 1;
+			//
+			
+			if (endtype == 0)
+			{
+			cursongname = songs[i].songName;
+			}
+			else
+			{
+			cursongname = songs[i].songName.substr(0, endcheck);
+				if (endtype == 1)
+					cursongname += "[";
+			}
+			trace(cursongname);
+			
+			
+			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, cursongname, true, false);
 			songText.isMenuItem = true;
 			songText.targetY = i;
 			grpSongs.add(songText);
@@ -256,6 +360,11 @@ class FreeplayState extends MusicBeatState
 			}
 			else
 			{
+			if (curMenu == 0)
+			{
+			FlxG.sound.music.stop();
+			}
+			Main.FreeplayActive = 0;
 			FlxG.switchState(new MainMenuState());
 			}
 		}
@@ -278,13 +387,15 @@ class FreeplayState extends MusicBeatState
 			Main.BotMode = 0;
 			trace("Bot Mode Not Active??");
 			}
-
+			FlxG.sound.music.stop();
+			FlxG.sound.playMusic(Paths.music('titleShoot'));
 			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 			PlayState.storyWeek = songs[curSelected].week;
 			trace('CUR WEEK' + PlayState.storyWeek);
 			LoadingState.loadAndSwitchState(new PlayState());
+			Main.FreeplayActive = 0;
 			}
 			else
 			{
@@ -303,6 +414,7 @@ class FreeplayState extends MusicBeatState
 						trace("Bot Mode Not Active??");
 						}
 						playRandomSong();
+						Main.FreeplayActive = 0;
 					}
 					else
 					{
@@ -344,29 +456,39 @@ class FreeplayState extends MusicBeatState
 				case 1:
 					diffText.text = "Friday Night Funkin' (19T)";
 				case 2:
-					diffText.text = "Vs. Chara (1T)";
+					diffText.text = "Vs. Chara (1 Track)";
 				case 3:
-					diffText.text = "Vs. Tricky (2T)";
+					diffText.text = "Vs. Tricky (2 Tracks)";
 				case 4:
-					diffText.text = "Vs. Abigail (3T)";
+					diffText.text = "Vs. Abigail (3 Tracks)";
 				case 5:
-					diffText.text = "Vs. Neon (3T)";
+					diffText.text = "Vs. Neon (3 Tracks)";
 				case 6:
-					diffText.text = "Beach Brother (3T)";
+					diffText.text = "Beach Brother (3 Tracks)";
 				case 7:
 					diffText.text = "Friday Night Shootin' (3T)";
 				case 8:
-					diffText.text = "Vs. Matt (5T)";
+					diffText.text = "Vs. Matt (5 Tracks)";
 				case 9:
-					diffText.text = "Vs. Carol (3T)";
+					diffText.text = "Vs. Carol (3 Tracks)";
 				case 10:
-					diffText.text = "Vs. Anders (3T)";
+					diffText.text = "Vs. Anders (3 Tracks)";
 				case 11:
-					diffText.text = "Vs. Whitty (3T)";
+					diffText.text = "Vs. Whitty (3 Tracks)";
 				case 12:
-					diffText.text = "Starcatcher (13T)";
+					diffText.text = "Starcatcher (13 Tracks)";
 				case 13:
 					diffText.text = "Salty's Sunday Night (19T)";
+				case 14:
+					diffText.text = "Vs. Tabi [Ex-BF] (3 Tracks)";
+				case 15:
+					diffText.text = "Vs. Girlfriend (3 Tracks)";
+				case 16:
+					diffText.text = "B3 Remixed (21 Tracks)";
+				case 17:
+					diffText.text = "Vs. Tord (2 Tracks)";
+				case 18:
+					diffText.text = "Vs. FL Chan (3 Tracks)";
 				}
 			}
 		}
@@ -383,12 +505,16 @@ class FreeplayState extends MusicBeatState
 					diffText.text = "Starcatcher (13T)";
 				case 2:
 					diffText.text = "Salty's Sunday Night (19T)";
+				case 3:
+					diffText.text = "B3 Remixed (21 Tracks)";
 				}
 		}
 	}
 
 	function playRandomSong()
 	{
+				FlxG.sound.music.stop();
+				FlxG.sound.playMusic(Paths.music('titleShoot'));
 				Main.RCurrentSeed = FlxG.random.resetInitialSeed();
 				var songtype = FlxG.random.int(1, 4);
 				var songnumber = 1;
@@ -608,9 +734,105 @@ class FreeplayState extends MusicBeatState
 					case 81:
 						songname = "Terminal";
 						week = 6;
+					case 82:
+						songname = "My Battle";
+					case 83:
+						songname = "Last Chance";
+					case 84:
+						songname = "Genocide";
+					case 85:
+						songname = "BoPanties";
+					case 86:
+						songname = "Highly Fresh";
+					case 87:
+						songname = "GFILFW";
+					case 88:
+						songname = "b3-tutorial";
+					case 89:
+						songname = "b3-bopeebo";
+					case 90:
+						songname = "b3-fresh";
+					case 91:
+						songname = "b3-dadbattle";
+					case 92:
+						songname = "b3-spookeez";
+						week = 2;
+					case 93:
+						songname = "b3-south";
+						week = 2;
+					case 94:
+						songname = "b3-pico";
+						week = 3;
+					case 95:
+						songname = "b3-philly";
+						week = 3;
+					case 96:
+						songname = "b3-blammed";
+						week = 3;
+					case 97:
+						songname = "b3-satin panties";
+						week = 4;
+					case 98:
+						songname = "b3-high";
+						week = 4;
+					case 99:
+						songname = "b3-milf";
+						week = 4;
+					case 100:
+						songname = "b3-cocoa";
+						week = 5;
+					case 101:
+						songname = "b3-eggnog";
+						week = 5;
+					case 102:
+						songname = "b3-winter horrorland";
+						week = 5;
+					case 103:
+						songname = "b3-senpai";
+						week = 6;
+					case 104:
+						songname = "b3-roses";
+						week = 6;
+					case 105:
+						songname = "b3-thorns";
+						week = 6;
+					case 106:
+						songname = "b3-lo-fight";
+					case 107:
+						songname = "b3-overhead";
+					case 108:
+						songname = "b3-ballistic";
+					case 109:
+						songname = "ballistic-old";
+					case 110:
+						songname = "fns-tutorial";
+					case 111:
+						songname = "adobe thrash";
+						week = 2;
+					case 112:
+						songname = "piconjo's school";
+						week = 2;
+					case 113:
+						songname = "trapped in teh 6aym";
+						week = 2;
+					case 114:
+						songname = "norway";
+					case 115:
+						songname = "tordbot";
+					case 116:
+						songname = "eferu chan";
+						week = 4;
+					case 117:
+						songname = "fruity reeverb 2";
+						week = 4;
+					case 118:
+						songname = "fl slayer";
+						week = 4;
 				}
 				
 				if (songnumber >= 63 && songnumber <= 81)
+					curDifficulty = 2;
+				if (songnumber >= 85 && songnumber <= 87)
 					curDifficulty = 2;
 				
 				var poop:String = Highscore.formatSong(songname, curDifficulty);
@@ -642,7 +864,7 @@ class FreeplayState extends MusicBeatState
 			curDifficulty = 0;
 		}
 		
-		if (curMenu == 13)
+		if (curMenu == 13 || curMenu == 15)
 		{
 			curDifficulty = 2;
 		}
@@ -698,7 +920,7 @@ class FreeplayState extends MusicBeatState
 		else
 		{
 		if (musplaying == 0)
-			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+			FlxG.sound.playMusic(Paths.music('title'), 0);
 		
 		musplaying = 1;
 		}

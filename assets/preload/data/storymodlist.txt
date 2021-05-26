@@ -1,3 +1,4 @@
 base game:funkin:1
 starcatcher:catcher:1
 saltys sunday:saltysunday:1
+b3 remixed:b3remix:1

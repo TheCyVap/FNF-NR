@@ -102,6 +102,7 @@ class MusicBeatState extends FlxUIState
 
 	public function stepHit():Void
 	{
+		trace(curStep + " | " + curBeat);
 		if (Main.BotDemo < 2)
 		{
 		if (curStep % 4 == 0)

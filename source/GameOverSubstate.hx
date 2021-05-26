@@ -17,6 +17,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	public function new(x:Float, y:Float)
 	{
 		var daStage = PlayState.curStage;
+		var daPlayer = PlayState.SONG.player1;
 		var daBf:String = '';
 		switch (daStage)
 		{
@@ -29,6 +30,11 @@ class GameOverSubstate extends MusicBeatSubstate
 			default:
 				daBf = 'bf';
 		}
+		
+		if (daPlayer == "pico")
+		{
+			daBf = 'pico';
+		}
 
 		super();
 
@@ -36,8 +42,17 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		bf = new Boyfriend(x, y, daBf);
 		add(bf);
+		
+		var cx = bf.getGraphicMidpoint().x;
+		var cy = bf.getGraphicMidpoint().y;
+		
+		if (daPlayer == "pico")
+		{
+			cx = bf.getGraphicMidpoint().x+140;
+			cy = bf.getGraphicMidpoint().y-50;
+		}
 
-		camFollow = new FlxObject(bf.getGraphicMidpoint().x, bf.getGraphicMidpoint().y, 1, 1);
+		camFollow = new FlxObject(cx, cy, 1, 1);
 		add(camFollow);
 
 		FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix));

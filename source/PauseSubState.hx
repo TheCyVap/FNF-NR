@@ -31,6 +31,15 @@ class PauseSubState extends MusicBeatSubstate
 	public function new(x:Float, y:Float)
 	{
 		super();
+		
+		if (Main.FPMenu < 0)
+		{
+		menuItems = ['Resume', 'Restart Song', 'Exit to menu'];
+		}
+		else
+		{
+		menuItems = ['Resume', 'Restart Song', 'Back to Freeplay', 'Exit to menu'];
+		}
 
 		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
 		pauseMusic.volume = 0;
@@ -141,7 +150,14 @@ class PauseSubState extends MusicBeatSubstate
 				{
 					grpMenuShit.clear();
 
+					if (Main.FPMenu < 0)
+					{
 					menuItems = ['Restart Song', 'Exit to menu'];
+					}
+					else
+					{
+					menuItems = ['Restart Song', 'Back to Freeplay', 'Exit to menu'];
+					}
 
 					for (i in 0...menuItems.length)
 					{
@@ -166,7 +182,14 @@ class PauseSubState extends MusicBeatSubstate
 				{
 					grpMenuShit.clear();
 
+					if (Main.FPMenu < 0)
+					{
 					menuItems = ['Restart Song', 'Exit to menu'];
+					}
+					else
+					{
+					menuItems = ['Restart Song', 'Back to Freeplay', 'Exit to menu'];
+					}
 
 					for (i in 0...menuItems.length)
 					{
@@ -194,7 +217,8 @@ class PauseSubState extends MusicBeatSubstate
 					close();
 				case "Restart Song":
 					FlxG.resetState();
-				case "Exit to menu":
+				case "Back to Freeplay":
+					FlxG.sound.music.stop();
 					PlayState.loadRep = false;
 					#if windows
 					if (PlayState.luaModchart != null)
@@ -203,6 +227,19 @@ class PauseSubState extends MusicBeatSubstate
 						PlayState.luaModchart = null;
 					}
 					#end
+					
+					FlxG.switchState(new FreeplayState());
+				case "Exit to menu":
+					FlxG.sound.music.stop();
+					PlayState.loadRep = false;
+					#if windows
+					if (PlayState.luaModchart != null)
+					{
+						PlayState.luaModchart.die();
+						PlayState.luaModchart = null;
+					}
+					#end
+					
 					FlxG.switchState(new MainMenuState());
 			}
 		}
@@ -217,7 +254,6 @@ class PauseSubState extends MusicBeatSubstate
 	override function destroy()
 	{
 		pauseMusic.destroy();
-
 		super.destroy();
 	}
 

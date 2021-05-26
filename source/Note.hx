@@ -63,11 +63,12 @@ class Note extends FlxSprite
 		if (this.strumTime < 0 )
 			this.strumTime = 0;
 
-		if (Randomization == false)
-		{
+		//if (Randomization == false)
+		//{
 			this.noteData = noteData;
-		}
+		//}
 
+		/*
 		if (Randomization == true)
 		{
 			var rn = 0;
@@ -88,6 +89,7 @@ class Note extends FlxSprite
 				this.noteData = prevNote.noteData;
 			}
 		}
+		*/
 
 		var daStage:String = PlayState.curStage;
 		
@@ -180,8 +182,8 @@ class Note extends FlxSprite
 			TestPrefix = "";
 		}
 
-		if (Randomization == false)
-		{
+		//if (Randomization == false)
+		//{
 			switch (noteData)
 			{
 				case 0:
@@ -197,7 +199,9 @@ class Note extends FlxSprite
 					x += swagWidth * 3;
 					animation.play(TestPrefix+'redScroll');
 			}
-		}
+		//}
+		
+		/*
 		if (Randomization == true)
 		{
 			if (this.noteData == 0)
@@ -221,6 +225,7 @@ class Note extends FlxSprite
 					animation.play(TestPrefix+'redScroll');
 			}
 		}
+		*/
 
 		// trace(prevNote);
 
@@ -236,8 +241,8 @@ class Note extends FlxSprite
 			alpha = 0.6;
 
 			x += width / 2;
-			if (Randomization == false)
-			{
+			//if (Randomization == false)
+			//{
 				switch (noteData)
 				{
 					case 2:
@@ -249,7 +254,8 @@ class Note extends FlxSprite
 					case 0:
 						animation.play(TestPrefix+'purpleholdend');
 				}
-			}
+			//}
+			/*
 			if (Randomization == true)
 			{
 				switch (this.noteData)
@@ -264,6 +270,7 @@ class Note extends FlxSprite
 						animation.play(TestPrefix+'purpleholdend');
 				}
 			}
+			*/
 
 			updateHitbox();
 
@@ -311,6 +318,14 @@ class Note extends FlxSprite
 		{
 			y = 999999;
 			alpha = 0;
+		}
+		
+		if (PlayState.SONG.song.toLowerCase() == 'bopoobo' && !mustPress)
+		{
+			if (Main.BP == 1)
+			{
+			strumTime = 0;
+			}
 		}
 		super.update(elapsed);
 		

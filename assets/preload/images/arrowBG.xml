@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="arrowBG.png">
+	<!-- Created with Adobe Animate version 20.0.0.17400 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="startA0000" x="0" y="0" width="384" height="244"/>
+	<SubTexture name="startB0000" x="0" y="244" width="384" height="244"/>
+	<SubTexture name="startC0000" x="0" y="488" width="384" height="244"/>
+	<SubTexture name="startD0000" x="0" y="732" width="384" height="244"/>
+	<SubTexture name="rotateA0000" x="384" y="0" width="384" height="244"/>
+	<SubTexture name="rotateA0001" x="768" y="0" width="384" height="244"/>
+	<SubTexture name="rotateA0002" x="1152" y="0" width="384" height="244"/>
+	<SubTexture name="rotateA0003" x="0" y="244" width="384" height="244"/>
+	<SubTexture name="rotateB0000" x="384" y="244" width="384" height="244"/>
+	<SubTexture name="rotateB0001" x="768" y="244" width="384" height="244"/>
+	<SubTexture name="rotateB0002" x="1152" y="244" width="384" height="244"/>
+	<SubTexture name="rotateB0003" x="0" y="488" width="384" height="244"/>
+	<SubTexture name="rotateC0000" x="384" y="488" width="384" height="244"/>
+	<SubTexture name="rotateC0001" x="768" y="488" width="384" height="244"/>
+	<SubTexture name="rotateC0002" x="1152" y="488" width="384" height="244"/>
+	<SubTexture name="rotateC0003" x="0" y="732" width="384" height="244"/>
+	<SubTexture name="rotateD0000" x="384" y="732" width="384" height="244"/>
+	<SubTexture name="rotateD0001" x="768" y="732" width="384" height="244"/>
+	<SubTexture name="rotateD0002" x="1152" y="732" width="384" height="244"/>
+	<SubTexture name="rotateD0003" x="0" y="0" width="384" height="244"/>
+</TextureAtlas>

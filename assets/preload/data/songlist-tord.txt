@@ -1,0 +1,2 @@
+Norway:tord:1
+Tordbot:tord:1

@@ -234,7 +234,7 @@ class Alphabet extends FlxSpriteGroup
 
 class AlphaCharacter extends FlxSprite
 {
-	public static var alphabet:String = "abcdefghijklmnopqrstuvwxyz";
+	public static var alphabet:String = "abcdefghijklmnopqrstuvwxyz236[";
 
 	public static var numbers:String = "1234567890";
 
@@ -253,8 +253,31 @@ class AlphaCharacter extends FlxSprite
 
 	public function createBold(letter:String)
 	{
-		animation.addByPrefix(letter, letter.toUpperCase() + " bold", 24);
-		animation.play(letter);
+		switch (letter)
+		{
+			case '.':
+				animation.addByPrefix(letter, 'period', 24);
+				animation.play(letter);
+				y += 50;
+			case "'":
+				animation.addByPrefix(letter, 'apostraphie', 24);
+				animation.play(letter);
+				y -= 0;
+			case "?":
+				animation.addByPrefix(letter, 'question mark', 24);
+				animation.play(letter);
+			case "!":
+				animation.addByPrefix(letter, 'exclamation point', 24);
+				animation.play(letter);
+			case "[":
+				animation.addByPrefix(letter, 'old', 24);
+				animation.play(letter);
+				y += 13;
+			default:
+				animation.addByPrefix(letter, letter.toUpperCase() + " bold", 24);
+				animation.play(letter);
+		}
+
 		updateHitbox();
 	}
 
@@ -268,7 +291,7 @@ class AlphaCharacter extends FlxSprite
 
 		animation.addByPrefix(letter, letter + " " + letterCase, 24);
 		animation.play(letter);
-		updateHitbox();
+		updateHitbox();	
 
 		FlxG.log.add('the row' + row);
 
@@ -302,6 +325,10 @@ class AlphaCharacter extends FlxSprite
 			case "!":
 				animation.addByPrefix(letter, 'exclamation point', 24);
 				animation.play(letter);
+			case "[":
+				animation.addByPrefix(letter, 'old', 24);
+				animation.play(letter);
+				y += 16;
 		}
 
 		updateHitbox();

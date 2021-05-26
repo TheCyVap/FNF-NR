@@ -53,6 +53,7 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		Main.BP = 0;
 		oops2 = 5;
 		Main.LeftBot = false;
 		Main.DownBot = false;
@@ -146,6 +147,19 @@ class TitleState extends MusicBeatState
 	var gfDance:FlxSprite;
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
+	var titBG:FlxSprite;
+	var titleNR:FlxSprite;
+	var titleBF:FlxSprite;
+	var NRy:Float = 0;
+	//
+	var Note1:FlxSprite;
+	var Note2:FlxSprite;
+	var Note3:FlxSprite;
+	var Note4:FlxSprite;
+	var Note5:FlxSprite;
+	var Note6:FlxSprite;
+	var Note7:FlxSprite;
+	var Note8:FlxSprite;
 
 	function startIntro()
 	{
@@ -185,11 +199,36 @@ class TitleState extends MusicBeatState
 		// bg.updateHitbox();
 		add(bg);
 
-		logoBl = new FlxSprite(-150, -100);
+		titBG = new FlxSprite(0, 0);
+		titBG.loadGraphic(Paths.image('titleBG'));
+		titBG.updateHitbox();
+		add(titBG);
+
+		createNotes();
+
+		add(Note1);
+		add(Note2);
+		add(Note3);
+		add(Note4);
+
+		titleBF = new FlxSprite(-30, (FlxG.height/2)-130);
+		titleBF.loadGraphic(Paths.image('BFtitle'));
+		titleBF.antialiasing = true;
+		titleBF.scale.set(0.95,0.97);
+		titleBF.updateHitbox();
+		add(titleBF);
+		
+		add(Note5);
+		add(Note6);
+		add(Note7);
+		add(Note8);
+
+		logoBl = new FlxSprite((FlxG.width/2)-160, -90);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		logoBl.antialiasing = true;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
 		logoBl.animation.play('bump');
+		logoBl.scale.set(0.8, 0.8);
 		logoBl.updateHitbox();
 		// logoBl.screenCenter();
 		// logoBl.color = FlxColor.BLACK;
@@ -200,13 +239,22 @@ class TitleState extends MusicBeatState
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		gfDance.antialiasing = true;
 		add(gfDance);
+		gfDance.alpha = 0;
 		add(logoBl);
 
-		titleText = new FlxSprite(100, FlxG.height * 0.8);
-		titleText.frames = Paths.getSparrowAtlas('titleEnter');
+		titleNR = new FlxSprite(FlxG.width/2 - 100, 165);
+		titleNR.loadGraphic(Paths.image('NRlogo'));
+		titleNR.updateHitbox();
+		titleNR.antialiasing = true;
+		titleNR.scale.set(0.7,0.7);
+		add(titleNR);
+
+		titleText = new FlxSprite(FlxG.width/2, FlxG.height * 0.78);
+		titleText.frames = Paths.getSparrowAtlas('titleEnter2');
 		titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
 		titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
 		titleText.antialiasing = true;
+		titleText.scale.set(1.25,1.25);
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
 		// titleText.screenCenter(X);
@@ -259,6 +307,259 @@ class TitleState extends MusicBeatState
 
 		// credGroup.add(credTextShit);
 		oops = FlxG.random.int(1, 100);
+		
+		new FlxTimer().start(0.02, function(tmr:FlxTimer)
+		{
+			if (titleNR.y < 172)
+			{
+				NRy += 0.0125;
+			}
+			if (titleNR.y > 172)
+			{
+				NRy -= 0.0125;
+			}
+			
+			titleNR.y += NRy;
+			
+			titBG.x -= 0.5;
+			titBG.y -= 0.5;
+			
+			if (titBG.x <= -128)
+			{
+				titBG.x += 128;
+				titBG.y += 128;
+			}
+			
+			//
+				noteStep();
+		}, 0);
+	}
+
+	function createNotes()
+	{
+		Note1 = new FlxSprite(0,-120);
+		Note1.frames = Paths.getSparrowAtlas('notelol');
+		Note1.animation.addByPrefix('greenScroll', 'green0');
+		Note1.animation.addByPrefix('redScroll', 'red0');
+		Note1.animation.addByPrefix('blueScroll', 'blue0');
+		Note1.animation.addByPrefix('purpleScroll', 'purple0');
+		Note1.scale.set(0.6,0.6);
+		//
+		Note2 = new FlxSprite(0,-120);
+		//Note2.loadGraphic(Paths.image('notelol'));
+		Note2.frames = Paths.getSparrowAtlas('notelol');
+		Note2.animation.addByPrefix('greenScroll', 'green0');
+		Note2.animation.addByPrefix('redScroll', 'red0');
+		Note2.animation.addByPrefix('blueScroll', 'blue0');
+		Note2.animation.addByPrefix('purpleScroll', 'purple0');
+		Note2.scale.set(0.6,0.6);
+		//
+		Note3 = new FlxSprite(0,-120);
+		//Note3.loadGraphic(Paths.image('notelol'));
+		Note3.frames = Paths.getSparrowAtlas('notelol');
+		Note3.animation.addByPrefix('greenScroll', 'green0');
+		Note3.animation.addByPrefix('redScroll', 'red0');
+		Note3.animation.addByPrefix('blueScroll', 'blue0');
+		Note3.animation.addByPrefix('purpleScroll', 'purple0');
+		Note3.scale.set(0.64,0.64);
+		//
+		Note4 = new FlxSprite(0,-120);
+		//Note4.loadGraphic(Paths.image('notelol'));
+		Note4.frames = Paths.getSparrowAtlas('notelol');
+		Note4.animation.addByPrefix('greenScroll', 'green0');
+		Note4.animation.addByPrefix('redScroll', 'red0');
+		Note4.animation.addByPrefix('blueScroll', 'blue0');
+		Note4.animation.addByPrefix('purpleScroll', 'purple0');
+		Note4.scale.set(0.64,0.64);
+		//
+		Note5 = new FlxSprite(0,-120);
+		//Note5.loadGraphic(Paths.image('notelol'));
+		Note5.frames = Paths.getSparrowAtlas('notelol');
+		Note5.animation.addByPrefix('greenScroll', 'green0');
+		Note5.animation.addByPrefix('redScroll', 'red0');
+		Note5.animation.addByPrefix('blueScroll', 'blue0');
+		Note5.animation.addByPrefix('purpleScroll', 'purple0');
+		Note5.scale.set(0.67,0.67);
+		//
+		Note6 = new FlxSprite(0,-120);
+		//Note6.loadGraphic(Paths.image('notelol'));
+		Note6.frames = Paths.getSparrowAtlas('notelol');
+		Note6.animation.addByPrefix('greenScroll', 'green0');
+		Note6.animation.addByPrefix('redScroll', 'red0');
+		Note6.animation.addByPrefix('blueScroll', 'blue0');
+		Note6.animation.addByPrefix('purpleScroll', 'purple0');
+		Note6.scale.set(0.67,0.67);
+		//
+		Note7 = new FlxSprite(0,-120);
+		//Note7.loadGraphic(Paths.image('notelol'));
+		Note7.frames = Paths.getSparrowAtlas('notelol');
+		Note7.animation.addByPrefix('greenScroll', 'green0');
+		Note7.animation.addByPrefix('redScroll', 'red0');
+		Note7.animation.addByPrefix('blueScroll', 'blue0');
+		Note7.animation.addByPrefix('purpleScroll', 'purple0');
+		Note7.scale.set(0.7,0.7);
+		//
+		Note8 = new FlxSprite(0,-120);
+		//Note8.loadGraphic(Paths.image('notelol'));
+		Note8.frames = Paths.getSparrowAtlas('notelol');
+		Note8.animation.addByPrefix('greenScroll', 'green0');
+		Note8.animation.addByPrefix('redScroll', 'red0');
+		Note8.animation.addByPrefix('blueScroll', 'blue0');
+		Note8.animation.addByPrefix('purpleScroll', 'purple0');
+		Note8.scale.set(0.7,0.7);
+		//
+		Main.RCurrentSeed = FlxG.random.resetInitialSeed();
+	}
+	
+	function noteStep()
+	{
+		var woah = 0;
+		Note1.y -= 3;
+		Note2.y	-= 5;
+		Note3.y	-= 6;
+		Note4.y	-= 7;
+		Note5.y -= 8;
+		Note6.y	-= 9;
+		Note7.y	-= 10;
+		Note8.y	-= 11;
+	
+		if (Note1.y < -120)
+		{
+			Note1.x = FlxG.random.int(-80, Std.int(FlxG.width/2));
+			Note1.y = FlxG.height+FlxG.random.int(100, 600);
+			woah = FlxG.random.int(1,4);
+			switch (woah)
+			{
+				case 1:
+					Note1.animation.play('greenScroll');
+				case 2:
+					Note1.animation.play('redScroll');
+				case 3:
+					Note1.animation.play('blueScroll');
+				case 4:
+					Note1.animation.play('purpleScroll');
+			}
+			
+		}
+		if (Note2.y < -120)
+		{
+			Note2.x = FlxG.random.int(-80, Std.int(FlxG.width/2)-100);
+			Note2.y = FlxG.height+FlxG.random.int(100, 600);
+			woah = FlxG.random.int(1,4);
+			switch (woah)
+			{
+				case 1:
+					Note2.animation.play('greenScroll');
+				case 2:
+					Note2.animation.play('redScroll');
+				case 3:
+					Note2.animation.play('blueScroll');
+				case 4:
+					Note2.animation.play('purpleScroll');
+			}
+		}
+		if (Note3.y < -120)
+		{
+			Note3.x = FlxG.random.int(-80, Std.int(FlxG.width/2)-100);
+			Note3.y = FlxG.height+FlxG.random.int(300, 480);
+			woah = FlxG.random.int(1,4);
+			switch (woah)
+			{
+				case 1:
+					Note3.animation.play('greenScroll');
+				case 2:
+					Note3.animation.play('redScroll');
+				case 3:
+					Note3.animation.play('blueScroll');
+				case 4:
+					Note3.animation.play('purpleScroll');
+			}
+		}
+		if (Note4.y < -120)
+		{
+			Note4.x = FlxG.random.int(-80, Std.int(FlxG.width/2)-100);
+			Note4.y = FlxG.height+FlxG.random.int(300, 480);
+			woah = FlxG.random.int(1,4);
+			switch (woah)
+			{
+				case 1:
+					Note4.animation.play('greenScroll');
+				case 2:
+					Note4.animation.play('redScroll');
+				case 3:
+					Note4.animation.play('blueScroll');
+				case 4:
+					Note4.animation.play('purpleScroll');
+			}
+		}
+		if (Note5.y < -120)
+		{
+			Note5.x = FlxG.random.int(-80, Std.int(FlxG.width/2)-100);
+			Note5.y = FlxG.height+FlxG.random.int(300, 480);
+			woah = FlxG.random.int(1,4);
+			switch (woah)
+			{
+				case 1:
+					Note5.animation.play('greenScroll');
+				case 2:
+					Note5.animation.play('redScroll');
+				case 3:
+					Note5.animation.play('blueScroll');
+				case 4:
+					Note5.animation.play('purpleScroll');
+			}
+		}
+		if (Note6.y < -120)
+		{
+			Note6.x = FlxG.random.int(-80, Std.int(FlxG.width/2)-100);
+			Note6.y = FlxG.height+FlxG.random.int(300, 480);
+			woah = FlxG.random.int(1,4);
+			switch (woah)
+			{
+				case 1:
+					Note6.animation.play('greenScroll');
+				case 2:
+					Note6.animation.play('redScroll');
+				case 3:
+					Note6.animation.play('blueScroll');
+				case 4:
+					Note6.animation.play('purpleScroll');
+			}
+		}
+		if (Note7.y < -120)
+		{
+			Note7.x = FlxG.random.int(-80, Std.int(FlxG.width/2)-100);
+			Note7.y = FlxG.height+FlxG.random.int(300, 480);
+			woah = FlxG.random.int(1,4);
+			switch (woah)
+			{
+				case 1:
+					Note7.animation.play('greenScroll');
+				case 2:
+					Note7.animation.play('redScroll');
+				case 3:
+					Note7.animation.play('blueScroll');
+				case 4:
+					Note7.animation.play('purpleScroll');
+			}
+		}
+		if (Note8.y < -120)
+		{
+			Note8.x = FlxG.random.int(-80, Std.int(FlxG.width/2)-100);
+			Note8.y = FlxG.height+FlxG.random.int(300, 480);
+			woah = FlxG.random.int(1,4);
+			switch (woah)
+			{
+				case 1:
+					Note8.animation.play('greenScroll');
+				case 2:
+					Note8.animation.play('redScroll');
+				case 3:
+					Note8.animation.play('blueScroll');
+				case 4:
+					Note8.animation.play('purpleScroll');
+			}
+		}
 	}
 
 	function getIntroTextShit():Array<Array<String>>
@@ -288,6 +589,7 @@ class TitleState extends MusicBeatState
 			Main.BotDemo = 0;
 			}
 		}
+		
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
@@ -523,8 +825,9 @@ class TitleState extends MusicBeatState
 		if (BeatMoment >= 80 && Main.BotDemo == 0)
 		{
 				Main.RCurrentSeed = FlxG.random.resetInitialSeed();
-				var songtype = FlxG.random.int(1, 5);
+				var songtype = 0;
 				var songnumber = 1;
+				var bopoobochance = FlxG.random.int(1, 1000);
 				var songname = "";
 				var week = 1;
 				Main.BotDemo = 1;
@@ -534,7 +837,7 @@ class TitleState extends MusicBeatState
 				var difficultpoop = 2;
 				
 				Main.RCurrentSeed = FlxG.random.resetInitialSeed();
-				songnumber = FlxG.random.int(1, 81);
+				songnumber = FlxG.random.int(1, 118);
 				
 				switch (songnumber)
 				{
@@ -749,6 +1052,102 @@ class TitleState extends MusicBeatState
 					case 81:
 						songname = "Terminal";
 						week = 6;
+					case 82:
+						songname = "My Battle";
+					case 83:
+						songname = "Last Chance";
+					case 84:
+						songname = "Genocide";
+					case 85:
+						songname = "BoPanties";
+					case 86:
+						songname = "Highly Fresh";
+					case 87:
+						songname = "GFILFW";
+					case 88:
+						songname = "b3-tutorial";
+					case 89:
+						songname = "b3-bopeebo";
+					case 90:
+						songname = "b3-fresh";
+					case 91:
+						songname = "b3-dadbattle";
+					case 92:
+						songname = "b3-spookeez";
+						week = 2;
+					case 93:
+						songname = "b3-south";
+						week = 2;
+					case 94:
+						songname = "b3-pico";
+						week = 3;
+					case 95:
+						songname = "b3-philly";
+						week = 3;
+					case 96:
+						songname = "b3-blammed";
+						week = 3;
+					case 97:
+						songname = "b3-satin panties";
+						week = 4;
+					case 98:
+						songname = "b3-high";
+						week = 4;
+					case 99:
+						songname = "b3-milf";
+						week = 4;
+					case 100:
+						songname = "b3-cocoa";
+						week = 5;
+					case 101:
+						songname = "b3-eggnog";
+						week = 5;
+					case 102:
+						songname = "b3-winter horrorland";
+						week = 5;
+					case 103:
+						songname = "b3-senpai";
+						week = 6;
+					case 104:
+						songname = "b3-roses";
+						week = 6;
+					case 105:
+						songname = "b3-thorns";
+						week = 6;
+					case 106:
+						songname = "b3-lo-fight";
+					case 107:
+						songname = "b3-overhead";
+					case 108:
+						songname = "b3-ballistic";
+					case 109:
+						songname = "ballistic-old";
+					case 110:
+						songname = "fns-tutorial";
+						difficultpoop = 1;
+					case 111:
+						songname = "adobe thrash";
+					case 112:
+						songname = "piconjo's school";
+					case 113:
+						songname = "trapped in teh 6aym";
+					case 114:
+						songname = "norway";
+					case 115:
+						songname = "tordbot";
+					case 116:
+						songname = "eferu chan";
+					case 117:
+						songname = "fruity reeverb 2";
+					case 118:
+						songname = "fl slayer";
+					
+				}
+				
+				if (bopoobochance == 1)
+				{
+					songname = "bopoobo";
+					week = 1;
 				}
 				
 				
